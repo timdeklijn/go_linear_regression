@@ -76,30 +76,33 @@ func calcError(t vec, l arr, w vec) float32 {
 }
 
 func main() {
-	// length := vec{5, 5.5, 5.8, 6, 6.3, 6.5, 6.9, 7.1, 7.4, 7.7}
-	// weight := vec{7, 7.5, 7.3, 8, 7.7, 7.9, 8.2, 8.8, 8.4, 8.3}
+	length := vec{5, 5.5, 5.8, 6, 6.3, 6.5, 6.9, 7.1, 7.4, 7.7}
+	weight := vec{7, 7.5, 7.3, 8, 7.7, 7.9, 8.2, 8.8, 8.4, 8.3}
 	// y = 2x + 1 -> y = ax + b -> weights [2,1]
-	length := vec{1, 2, 3, 4}
-	weight := vec{3, 5, 7, 9}
+	// length := vec{1, 2, 3, 4}
+	// weight := vec{3, 5, 7, 9}
 	ll := addOnes(length)
 	var thetas vec
 	for i := 0; i < len(ll[0]); i++ {
 		thetas = append(thetas, rand.Float32())
 	}
-	cntr := 0
-	for cntr < 100 {
+	cntr := 1
+	for cntr < 100001 {
 		pred := predict(ll, thetas)
 		var residuals vec
 		for i := range pred {
 			residuals = append(residuals, weight[i]-pred[i])
 		}
-		g := calcGradient(ll, residuals, 0.1, len(length))
+		g := calcGradient(ll, residuals, 0.01, len(length))
 		for i := range thetas {
 			thetas[i] += g[i]
 		}
 
-		e := calcError(thetas, ll, weight)
-		fmt.Println(thetas, e, pred)
+		if cntr%100 == 0 {
+			e := calcError(thetas, ll, weight)
+			fmt.Println("Epoch", cntr, "\nThetas", thetas, "\nError", e, "\nPrediction", pred)
+			fmt.Println("=======================")
+		}
 		cntr++
 	}
 }
