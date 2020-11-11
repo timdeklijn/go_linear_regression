@@ -7,14 +7,14 @@ import (
 
 func TestTransposeMat(t *testing.T) {
 	ts := []struct {
-		test [][]float32
-		want [][]float32
+		test arr
+		want arr
 	}{{
-		[][]float32{[]float32{1}, []float32{2}},
-		[][]float32{[]float32{1, 2}},
+		arr{vec{1}, vec{2}},
+		arr{vec{1, 2}},
 	}, {
-		[][]float32{[]float32{1, 2}, []float32{3, 4}},
-		[][]float32{[]float32{1, 3}, []float32{2, 4}},
+		arr{vec{1, 2}, vec{3, 4}},
+		arr{vec{1, 3}, vec{2, 4}},
 	},
 	}
 
@@ -28,14 +28,14 @@ func TestTransposeMat(t *testing.T) {
 
 func TestTransposeVec(t *testing.T) {
 	ts := []struct {
-		test []float32
-		want [][]float32
+		test vec
+		want arr
 	}{{
-		[]float32{1},
-		[][]float32{[]float32{1}},
+		vec{1},
+		arr{vec{1}},
 	}, {
-		[]float32{1, 2},
-		[][]float32{[]float32{1}, []float32{2}},
+		vec{1, 2},
+		arr{vec{1}, vec{2}},
 	},
 	}
 

@@ -5,26 +5,29 @@ import (
 	"math/rand"
 )
 
-func addOnes(a []float32) [][]float32 {
-	var new [][]float32
+type vec []float32
+type arr []vec
+
+func addOnes(a vec) arr {
+	var new arr
 	for _, aa := range a {
-		new = append(new, []float32{1.0, aa})
+		new = append(new, vec{1.0, aa})
 	}
 	return new
 }
 
-func predict(ll [][]float32, thetas []float32) []float32 {
-	var predictions []float32
+func predict(ll arr, thetas vec) vec {
+	var predictions vec
 	for _, i := range ll {
 		predictions = append(predictions, i[0]*thetas[0]+i[1]*thetas[1])
 	}
 	return predictions
 }
 
-func transposeMat(m [][]float32) [][]float32 {
-	var new [][]float32
+func transposeMat(m arr) arr {
+	var new arr
 	for i := 0; i < len(m[0]); i++ {
-		var row []float32
+		var row vec
 		new = append(new, row)
 		for j := 0; j < len(m); j++ {
 			new[i] = append(new[i], m[j][i])
@@ -33,16 +36,16 @@ func transposeMat(m [][]float32) [][]float32 {
 	return new
 }
 
-func transposeVec(v []float32) [][]float32 {
-	var new [][]float32
+func transposeVec(v vec) arr {
+	var new arr
 	for _, i := range v {
-		new = append(new, []float32{i})
+		new = append(new, vec{i})
 	}
 	return new
 }
 
-func calcGradient(ll [][]float32, residuals []float32, lr float32, m int) []float32 {
-	var new []float32
+func calcGradient(ll arr, residuals vec, lr float32, m int) vec {
+	var new vec
 	x := transposeMat(ll)
 	r := transposeVec(residuals)
 	// i => 0, 1
@@ -62,7 +65,7 @@ func calcGradient(ll [][]float32, residuals []float32, lr float32, m int) []floa
 	return new
 }
 
-func calcError(t []float32, l [][]float32, w []float32) float32 {
+func calcError(t vec, l arr, w vec) float32 {
 	p := predict(l, t)
 	var s float32 = 0.0
 	for i := range p {
@@ -73,20 +76,20 @@ func calcError(t []float32, l [][]float32, w []float32) float32 {
 }
 
 func main() {
-	// length := []float32{5, 5.5, 5.8, 6, 6.3, 6.5, 6.9, 7.1, 7.4, 7.7}
-	// weight := []float32{7, 7.5, 7.3, 8, 7.7, 7.9, 8.2, 8.8, 8.4, 8.3}
+	// length := vec{5, 5.5, 5.8, 6, 6.3, 6.5, 6.9, 7.1, 7.4, 7.7}
+	// weight := vec{7, 7.5, 7.3, 8, 7.7, 7.9, 8.2, 8.8, 8.4, 8.3}
 	// y = 2x + 1 -> y = ax + b -> weights [2,1]
-	length := []float32{1, 2, 3, 4}
-	weight := []float32{3, 5, 7, 9}
+	length := vec{1, 2, 3, 4}
+	weight := vec{3, 5, 7, 9}
 	ll := addOnes(length)
-	var thetas []float32
+	var thetas vec
 	for i := 0; i < len(ll[0]); i++ {
 		thetas = append(thetas, rand.Float32())
 	}
 	cntr := 0
 	for cntr < 100 {
 		pred := predict(ll, thetas)
-		var residuals []float32
+		var residuals vec
 		for i := range pred {
 			residuals = append(residuals, weight[i]-pred[i])
 		}
