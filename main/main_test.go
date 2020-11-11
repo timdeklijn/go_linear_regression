@@ -7,14 +7,14 @@ import (
 
 func TestTransposeMat(t *testing.T) {
 	ts := []struct {
-		test arr
-		want arr
+		test Arr
+		want Arr
 	}{{
-		arr{vec{1}, vec{2}},
-		arr{vec{1, 2}},
+		Arr{Vec{1}, Vec{2}},
+		Arr{Vec{1, 2}},
 	}, {
-		arr{vec{1, 2}, vec{3, 4}},
-		arr{vec{1, 3}, vec{2, 4}},
+		Arr{Vec{1, 2}, Vec{3, 4}},
+		Arr{Vec{1, 3}, Vec{2, 4}},
 	},
 	}
 
@@ -28,14 +28,14 @@ func TestTransposeMat(t *testing.T) {
 
 func TestTransposeVec(t *testing.T) {
 	ts := []struct {
-		test vec
-		want arr
+		test Vec
+		want Arr
 	}{{
-		vec{1},
-		arr{vec{1}},
+		Vec{1},
+		Arr{Vec{1}},
 	}, {
-		vec{1, 2},
-		arr{vec{1}, vec{2}},
+		Vec{1, 2},
+		Arr{Vec{1}, Vec{2}},
 	},
 	}
 
