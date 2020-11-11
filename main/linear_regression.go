@@ -53,21 +53,30 @@ func (lr *LinearRegression) Predict(d Arr) Vec {
 	return predictions
 }
 
+// calcResiduals calculates the difference between the predicted values,
+// pred, and the actual values lr.data.y. The difference is returned as
+// a verctor
+func (lr *LinearRegression) calcResiduals(pred Vec) Vec {
+	var residuals Vec
+	for i := range pred {
+		residuals = append(residuals, lr.data.y[i]-pred[i])
+	}
+	return residuals
+}
+
 // Fit runs the least squares optimization to obtain the thetas
 // the best fit the data.
 func (lr *LinearRegression) Fit() {
 	cntr := 1
 	pred := lr.Predict(lr.data.x)
 	for cntr < lr.config.epochs+1 {
-		var residuals Vec
-		for i := range pred {
-			residuals = append(residuals, lr.data.y[i]-pred[i])
-		}
-		g := lr.calcGradient(residuals)
+		residuals := lr.calcResiduals(pred)
+		gradient := lr.calcGradient(residuals)
 		for i := range lr.thetas {
-			lr.thetas[i] += g[i]
+			// Update thetas
+			lr.thetas[i] += gradient[i]
 		}
-
+		// Create new predictions
 		pred := lr.Predict(lr.data.x)
 		if cntr%100 == 0 {
 			e := lr.calcError(pred)
@@ -113,11 +122,13 @@ func (lr *LinearRegression) calcError(p Vec) float32 {
 	return s
 }
 
+// initThetas creates a vector with random numbers of length n. This will
+// be used as the starting point for the thetas that will be optimized during
+// linear regression.
 func initThetas(n int) Vec {
 	var t Vec
 	for i := 0; i < n; i++ {
 		t = append(t, rand.Float32())
 	}
-	fmt.Println(t)
 	return t
 }
