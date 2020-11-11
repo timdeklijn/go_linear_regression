@@ -8,25 +8,25 @@ import (
 // LinearRegressionConfig is a container for settings for running
 // linear regression.
 type linearRegressionConfig struct {
-	learningRate   float32
-	printFrequency int
-	epochs         int
+	learningRate   float32 // How big the changes in theta will be
+	printFrequency int     // How many epochs should there be a print
+	epochs         int     // Number of update cycles
 }
 
 // LinearRegressionData is a container for the data that linear regression
 // will be run on.
 type linearRegressionData struct {
-	x Arr
-	y Vec
+	x Arr // Features
+	y Vec // Labels
 	l int // length of the x data
 }
 
 // LinearRegression is the type bundling the linear regression containers and
 // functions
 type LinearRegression struct {
-	config linearRegressionConfig
-	data   linearRegressionData
-	thetas Vec
+	config linearRegressionConfig // Config of the linear regression
+	data   linearRegressionData   // Data container
+	thetas Vec                    // Thetas, will be optimized
 }
 
 // NewLinearRegression creates a new LinearRegression type with sane defaults
@@ -45,9 +45,9 @@ func NewLinearRegression(x Arr, y Vec) LinearRegression {
 // taking the dot product.
 //
 //		y = x.thetas
-func (lr *LinearRegression) Predict() Vec {
+func (lr *LinearRegression) Predict(d Arr) Vec {
 	var predictions Vec
-	for _, i := range lr.data.x {
+	for _, i := range d {
 		predictions = append(predictions, i[0]*lr.thetas[0]+i[1]*lr.thetas[1])
 	}
 	return predictions
@@ -57,7 +57,7 @@ func (lr *LinearRegression) Predict() Vec {
 // the best fit the data.
 func (lr *LinearRegression) Fit() {
 	cntr := 1
-	pred := lr.Predict()
+	pred := lr.Predict(lr.data.x)
 	for cntr < lr.config.epochs+1 {
 		var residuals Vec
 		for i := range pred {
@@ -68,7 +68,7 @@ func (lr *LinearRegression) Fit() {
 			lr.thetas[i] += g[i]
 		}
 
-		pred := lr.Predict()
+		pred := lr.Predict(lr.data.x)
 		if cntr%100 == 0 {
 			e := lr.calcError(pred)
 			fmt.Println(
