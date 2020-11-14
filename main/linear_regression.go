@@ -57,11 +57,7 @@ func (lr *LinearRegression) Predict(d Arr) Vec {
 // pred, and the actual values lr.data.y. The difference is returned as
 // a verctor
 func (lr *LinearRegression) calcResiduals(pred Vec) Vec {
-	var residuals Vec
-	for i := range pred {
-		residuals = append(residuals, lr.data.y[i]-pred[i])
-	}
-	return residuals
+	return lr.data.y.Sub(pred)
 }
 
 // Fit runs the least squares optimization to obtain the thetas

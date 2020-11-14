@@ -84,3 +84,22 @@ func TestAddOnesVec(t *testing.T) {
 		}
 	}
 }
+
+func TestSubVec(t *testing.T) {
+	cases := []struct {
+		test    Vec
+		testMin Vec
+		want    Vec
+	}{{
+		Vec{2, 3, 4},
+		Vec{1, 2, 3},
+		Vec{1, 1, 1},
+	}}
+	for _, tc := range cases {
+		got := tc.test.Sub(tc.testMin)
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("Sub was incorrect, got %v, want: %v", got, tc.want)
+
+		}
+	}
+}

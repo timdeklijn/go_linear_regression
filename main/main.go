@@ -12,7 +12,6 @@ func main() {
 	// Setup
 	x := length.AddOnes()
 	lr := NewLinearRegression(x, weight)
-	lr.config.epochs = 10000
 	// Run
 	lr.Fit()
 	fmt.Println("\nThetas:", lr.thetas)

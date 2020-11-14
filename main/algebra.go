@@ -54,3 +54,12 @@ func (v Vec) Transpose() Arr {
 	}
 	return new
 }
+
+// Sub subtracts other from v. Returns a new Vec.
+func (v Vec) Sub(other Vec) Vec {
+	var new Vec
+	for i := range v {
+		new = append(new, v[i]-other[i])
+	}
+	return new
+}
