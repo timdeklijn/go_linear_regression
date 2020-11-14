@@ -19,7 +19,7 @@ func TestTransposeMat(t *testing.T) {
 	}
 
 	for _, tc := range ts {
-		got := transposeMat(tc.test)
+		got := tc.test.Transpose()
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("TransposeMat was incorrect, got %v, want: %v", got, tc.want)
 		}
@@ -40,7 +40,7 @@ func TestTransposeVec(t *testing.T) {
 	}
 
 	for _, tc := range ts {
-		got := transposeVec(tc.test)
+		got := tc.test.Transpose()
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("TransposeVec was incorrect, got %v, want: %v", got, tc.want)
 		}

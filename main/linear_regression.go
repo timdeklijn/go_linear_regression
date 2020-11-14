@@ -93,8 +93,8 @@ func (lr *LinearRegression) Fit() {
 
 func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
 	var new Vec
-	x := transposeMat(lr.data.x)
-	r := transposeVec(residuals)
+	x := lr.data.x.Transpose()
+	r := residuals.Transpose()
 	for i := 0; i < len(x); i++ {
 		var n float32 = 0.0
 		for j := 0; j < len(r); j++ {

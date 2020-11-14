@@ -32,19 +32,22 @@ func (v Vec) AddOnes() Arr {
 	return new
 }
 
-func transposeMat(m Arr) Arr {
+// Transpose eturns a transpose of the Array.
+func (a Arr) Transpose() Arr {
 	var new Arr
-	for i := 0; i < len(m[0]); i++ {
+	for i := 0; i < len(a[0]); i++ {
 		var row Vec
 		new = append(new, row)
-		for j := 0; j < len(m); j++ {
-			new[i] = append(new[i], m[j][i])
+		for j := 0; j < len(a); j++ {
+			new[i] = append(new[i], a[j][i])
 		}
 	}
 	return new
 }
 
-func transposeVec(v Vec) Arr {
+// Transpose returns the transpose of the vector,
+// which is an Array.
+func (v Vec) Transpose() Arr {
 	var new Arr
 	for _, i := range v {
 		new = append(new, Vec{i})
