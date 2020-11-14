@@ -63,3 +63,12 @@ func (v Vec) Sub(other Vec) Vec {
 	}
 	return new
 }
+
+// Add add other to v. Returns a new Vec.
+func (v Vec) Add(other Vec) Vec {
+	var new Vec
+	for i := range v {
+		new = append(new, v[i]+other[i])
+	}
+	return new
+}

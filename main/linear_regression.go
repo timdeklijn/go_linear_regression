@@ -68,10 +68,7 @@ func (lr *LinearRegression) Fit() {
 	for cntr < lr.config.epochs+1 {
 		residuals := lr.calcResiduals(pred)
 		gradient := lr.calcGradient(residuals)
-		for i := range lr.thetas {
-			// Update thetas
-			lr.thetas[i] += gradient[i]
-		}
+		lr.thetas = lr.thetas.Add(gradient)
 		// Create new predictions
 		pred := lr.Predict(lr.data.x)
 		if cntr%100 == 0 {
