@@ -1,34 +1,35 @@
 package main
 
-import "fmt"
-
 // Vec (tor) type
 type Vec []float32
 
 // Arr (ay) type
 type Arr []Vec
 
-func addOnes(a interface{}) (Arr, error) {
+// AddOnes creates an Array where each element is a list (Vec)
+// starting with 1.0.
+func (a Arr) AddOnes() Arr {
 	var new Arr
-	switch v := a.(type) {
-	case Arr:
-		for _, ii := range v {
-			var tmp Vec
-			tmp = append(tmp, 1.0)
-			for _, iii := range ii {
-				tmp = append(tmp, iii)
-			}
-			new = append(new, tmp)
+	for i := 0; i < len(a); i++ {
+		var tmp Vec
+		tmp = append(tmp, 1.0)
+		for _, ii := range a[i] {
+			tmp = append(tmp, ii)
 		}
-		return new, nil
-	case Vec:
-		for _, aa := range v {
-			new = append(new, Vec{1.0, aa})
-		}
-		return new, nil
-	default:
-		return nil, fmt.Errorf(fmt.Sprintf("This function only accepts Arr and Vec types, not '%v'", a))
+		new = append(new, tmp)
+
 	}
+	return new
+}
+
+// AddOnes creates an Array where each element is a list (Vec)
+// starting with 1.0.
+func (v Vec) AddOnes() Arr {
+	var new Arr
+	for _, aa := range v {
+		new = append(new, Vec{1.0, aa})
+	}
+	return new
 }
 
 func transposeMat(m Arr) Arr {

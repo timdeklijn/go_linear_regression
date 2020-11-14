@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"reflect"
 	"testing"
 )
@@ -48,35 +47,38 @@ func TestTransposeVec(t *testing.T) {
 	}
 }
 
-func TestAddOnes(t *testing.T) {
+func TestAddOnesArr(t *testing.T) {
 	cases := []struct {
-		test interface{}
+		test Arr
 		want Arr
-		Err  error
 	}{
-		{
-			Vec{1, 2},
-			Arr{Vec{1, 1}, Vec{1, 2}},
-			nil,
-		},
+
 		{
 			Arr{Vec{1, 2}, Vec{1, 2}},
 			Arr{Vec{1, 1, 2}, Vec{1, 1, 2}},
-			nil,
-		},
-		{
-			"Wrong Type",
-			nil,
-			fmt.Errorf("This function only accepts Arr and Vec types, not 'Wrong Type'"),
 		},
 	}
 	for _, tc := range cases {
-		got, err := addOnes(tc.test)
-		fmt.Println(got)
-		if err != tc.Err {
-			fmt.Println(tc.Err)
-			t.Errorf("Unexpected error: %s", err)
+		got := tc.test.AddOnes()
+		if !reflect.DeepEqual(got, tc.want) {
+			t.Errorf("AddOnes was incorrect, got %v, want: %v", got, tc.want)
 		}
+	}
+}
+
+func TestAddOnesVec(t *testing.T) {
+	cases := []struct {
+		test Vec
+		want Arr
+	}{
+
+		{
+			Vec{1, 2},
+			Arr{Vec{1, 1}, Vec{1, 2}},
+		},
+	}
+	for _, tc := range cases {
+		got := tc.test.AddOnes()
 		if !reflect.DeepEqual(got, tc.want) {
 			t.Errorf("AddOnes was incorrect, got %v, want: %v", got, tc.want)
 		}

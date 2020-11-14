@@ -10,7 +10,7 @@ func main() {
 	weight := Vec{7, 7.5, 7.3, 8, 7.7, 7.9, 8.2, 8.8, 8.4, 8.3}
 
 	// Setup
-	x, _ := addOnes(length)
+	x := length.AddOnes()
 	lr := NewLinearRegression(x, weight)
 	lr.config.epochs = 10000
 	// Run
