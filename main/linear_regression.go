@@ -7,15 +7,16 @@ import (
 
 // LinearRegressionConfig is a container for settings for running
 // linear regression.
-type linearRegressionConfig struct {
+type LinearRegressionConfig struct {
 	learningRate   float32 // How big the changes in theta will be
+	printUpdates   bool    // print updates at printFrequency
 	printFrequency int     // How many epochs should there be a print
 	epochs         int     // Number of update cycles
 }
 
 // LinearRegressionData is a container for the data that linear regression
 // will be run on.
-type linearRegressionData struct {
+type LinearRegressionData struct {
 	x Arr // Features
 	y Vec // Labels
 	l int // length of the x data
@@ -24,20 +25,21 @@ type linearRegressionData struct {
 // LinearRegression is the type bundling the linear regression containers and
 // functions
 type LinearRegression struct {
-	config linearRegressionConfig // Config of the linear regression
-	data   linearRegressionData   // Data container
+	config LinearRegressionConfig // Config of the linear regression
+	data   LinearRegressionData   // Data container
 	thetas Vec                    // Thetas, will be optimized
 }
 
 // NewLinearRegression creates a new LinearRegression type with sane defaults
 func NewLinearRegression(x Arr, y Vec) LinearRegression {
-	config := linearRegressionConfig{
+	config := LinearRegressionConfig{
 		learningRate:   0.01,
+		printUpdates:   true,
 		printFrequency: 100,
 		epochs:         1000,
 	}
-	data := linearRegressionData{x, y, len(x)}
-	thetas := initThetas(len(x[0]))
+	data := LinearRegressionData{x, y, len(x)}
+	thetas := InitThetas(len(x[0]))
 	return LinearRegression{config, data, thetas}
 }
 
@@ -55,7 +57,7 @@ func (lr *LinearRegression) Predict(d Arr) Vec {
 
 // calcResiduals calculates the difference between the predicted values,
 // pred, and the actual values lr.data.y. The difference is returned as
-// a verctor
+// a vector
 func (lr *LinearRegression) calcResiduals(pred Vec) Vec {
 	return lr.data.y.Sub(pred)
 }
@@ -71,7 +73,7 @@ func (lr *LinearRegression) Fit() {
 		lr.thetas = lr.thetas.Add(gradient)
 		// Create new predictions
 		pred := lr.Predict(lr.data.x)
-		if cntr%100 == 0 {
+		if cntr%100 == 0 && lr.config.printUpdates {
 			e := lr.calcError(pred)
 			fmt.Println(
 				"================================",
@@ -115,10 +117,10 @@ func (lr *LinearRegression) calcError(p Vec) float32 {
 	return s
 }
 
-// initThetas creates a vector with random numbers of length n. This will
+// InitThetas creates a vector with random numbers of length n. This will
 // be used as the starting point for the thetas that will be optimized during
 // linear regression.
-func initThetas(n int) Vec {
+func InitThetas(n int) Vec {
 	var t Vec
 	for i := 0; i < n; i++ {
 		t = append(t, rand.Float32())

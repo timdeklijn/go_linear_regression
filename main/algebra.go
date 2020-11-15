@@ -32,7 +32,7 @@ func (v Vec) AddOnes() Arr {
 	return new
 }
 
-// Transpose eturns a transpose of the Array.
+// Transpose returns a transpose of the Array.
 func (a Arr) Transpose() Arr {
 	var new Arr
 	for i := 0; i < len(a[0]); i++ {
