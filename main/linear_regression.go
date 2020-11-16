@@ -86,6 +86,10 @@ func (lr *LinearRegression) Fit() {
 	}
 }
 
+// calcGradient calculates:
+//
+//		(self.lr/m)*(np.dot(X.T, residuals.T))
+//
 func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
 	var new Vec
 	x := lr.data.x.Transpose()
