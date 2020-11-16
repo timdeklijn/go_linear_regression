@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	. "linear_regression/pkg/algebra"
-	. "linear_regression/pkg/linear_regression"
+	. "github.com/timdeklijn/go_linear_regression/pkg/algebra"
+	. "github.com/timdeklijn/go_linear_regression/pkg/linear_regression"
 )
 
 func main() {

@@ -1,7 +1,7 @@
 package linear_regression
 
 import (
-	"linear_regression/pkg/algebra"
+	"github.com/timdeklijn/go_linear_regression/pkg/algebra"
 	"math"
 	"reflect"
 	"testing"

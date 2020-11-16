@@ -2,7 +2,7 @@ package linear_regression
 
 import (
 	"fmt"
-	. "linear_regression/pkg/algebra"
+	. "github.com/timdeklijn/go_linear_regression/pkg/algebra"
 	"math/rand"
 )
 
