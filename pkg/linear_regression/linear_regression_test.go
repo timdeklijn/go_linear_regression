@@ -1,7 +1,7 @@
 package linear_regression
 
 import (
-	"github.com/timdeklijn/go_linear_regression/pkg/algebra"
+	. "github.com/timdeklijn/go_linear_regression/pkg/algebra"
 	"math"
 	"reflect"
 	"testing"
@@ -15,12 +15,12 @@ func TestLinearRegression_Fit(t *testing.T) {
 	type fields struct {
 		config LinearRegressionConfig
 		data   LinearRegressionData
-		thetas algebra.Vec
+		thetas Vec
 	}
 	tests := []struct {
 		name   string
 		fields fields
-		want   algebra.Vec
+		want   Vec
 	}{
 		{
 			name: "Simple Test Fit: y=a+bx (a=0,b=1)",
@@ -32,13 +32,13 @@ func TestLinearRegression_Fit(t *testing.T) {
 					epochs:         100000,
 				},
 				LinearRegressionData{
-					x: algebra.Vec{1, 2, 3, 4}.AddOnes(),
-					y: algebra.Vec{1, 2, 3, 4},
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{1, 2, 3, 4},
 					l: 4,
 				},
 				InitThetas(2),
 			},
-			want: algebra.Vec{0.0, 1.0},
+			want: Vec{0.0, 1.0},
 		},
 	}
 	for _, tt := range tests {
@@ -66,16 +66,16 @@ func TestLinearRegression_Predict(t *testing.T) {
 	type fields struct {
 		config LinearRegressionConfig
 		data   LinearRegressionData
-		thetas algebra.Vec
+		thetas Vec
 	}
 	type args struct {
-		d algebra.Arr
+		d Arr
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		args   args
-		want   algebra.Vec
+		want   Vec
 	}{
 		{
 			name: "Predict simple: y(x)=1+x->x=2->y=3",
@@ -87,16 +87,16 @@ func TestLinearRegression_Predict(t *testing.T) {
 					epochs:         100000,
 				},
 				LinearRegressionData{
-					x: algebra.Vec{1, 2, 3, 4}.AddOnes(),
-					y: algebra.Vec{1, 2, 3, 4},
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{1, 2, 3, 4},
 					l: 4,
 				},
-				algebra.Vec{1, 1},
+				Vec{1, 1},
 			},
 			args: args{
-				d: algebra.Vec{2}.AddOnes(),
+				d: Vec{2}.AddOnes(),
 			},
-			want: algebra.Vec{3},
+			want: Vec{3},
 		},
 		{
 			name: "Predict simpler: y(x)=0+x->x=2->y=2",
@@ -108,16 +108,16 @@ func TestLinearRegression_Predict(t *testing.T) {
 					epochs:         100000,
 				},
 				LinearRegressionData{
-					x: algebra.Vec{1, 2, 3, 4}.AddOnes(),
-					y: algebra.Vec{1, 2, 3, 4},
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{1, 2, 3, 4},
 					l: 4,
 				},
-				algebra.Vec{0, 1},
+				Vec{0, 1},
 			},
 			args: args{
-				d: algebra.Vec{2}.AddOnes(),
+				d: Vec{2}.AddOnes(),
 			},
-			want: algebra.Vec{2},
+			want: Vec{2},
 		},
 	}
 	for _, tt := range tests {
@@ -138,16 +138,16 @@ func TestLinearRegression_calcResiduals(t *testing.T) {
 	type fields struct {
 		config LinearRegressionConfig
 		data   LinearRegressionData
-		thetas algebra.Vec
+		thetas Vec
 	}
 	type args struct {
-		pred algebra.Vec
+		pred Vec
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		args   args
-		want   algebra.Vec
+		want   Vec
 	}{
 		{
 			name: "Return a 0 residual.",
@@ -159,16 +159,16 @@ func TestLinearRegression_calcResiduals(t *testing.T) {
 					epochs:         100000,
 				},
 				LinearRegressionData{
-					x: algebra.Vec{1, 2, 3, 4}.AddOnes(),
-					y: algebra.Vec{1, 2, 3, 4},
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{1, 2, 3, 4},
 					l: 4,
 				},
-				algebra.Vec{1, 1},
+				Vec{1, 1},
 			},
 			args: args{
-				pred: algebra.Vec{1, 2, 3, 4},
+				pred: Vec{1, 2, 3, 4},
 			},
-			want: algebra.Vec{0, 0, 0, 0},
+			want: Vec{0, 0, 0, 0},
 		},
 	}
 	for _, tt := range tests {
@@ -189,16 +189,16 @@ func TestLinearRegression_calcGradient(t *testing.T) {
 	type fields struct {
 		config LinearRegressionConfig
 		data   LinearRegressionData
-		thetas algebra.Vec
+		thetas Vec
 	}
 	type args struct {
-		residuals algebra.Vec
+		residuals Vec
 	}
 	tests := []struct {
 		name   string
 		fields fields
 		args   args
-		want   algebra.Vec
+		want   Vec
 	}{
 		{
 			// X.T = [[1,1],[1,2],[1,3],[1,4]].T = [[1,1,1,1],[1,2,3,4]]
@@ -215,16 +215,16 @@ func TestLinearRegression_calcGradient(t *testing.T) {
 					epochs:         100000,
 				},
 				LinearRegressionData{
-					x: algebra.Vec{1, 2, 3, 4}.AddOnes(),
-					y: algebra.Vec{1, 2, 3, 4},
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{1, 2, 3, 4},
 					l: 4,
 				},
-				algebra.Vec{1, 1},
+				Vec{1, 1},
 			},
 			args: args{
-				residuals: algebra.Vec{1, 1, 1, 1},
+				residuals: Vec{1, 1, 1, 1},
 			},
-			want: algebra.Vec{10, 25},
+			want: Vec{10, 25},
 		},
 	}
 	for _, tt := range tests {
@@ -245,10 +245,10 @@ func TestLinearRegression_calcError(t *testing.T) {
 	type fields struct {
 		config LinearRegressionConfig
 		data   LinearRegressionData
-		thetas algebra.Vec
+		thetas Vec
 	}
 	type args struct {
-		p algebra.Vec
+		p Vec
 	}
 	tests := []struct {
 		name   string
@@ -266,14 +266,14 @@ func TestLinearRegression_calcError(t *testing.T) {
 					epochs:         100000,
 				},
 				LinearRegressionData{
-					x: algebra.Vec{1, 2, 3, 4}.AddOnes(),
-					y: algebra.Vec{3, 4, 5, 6},
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{3, 4, 5, 6},
 					l: 4,
 				},
-				algebra.Vec{1, 1},
+				Vec{1, 1},
 			},
 			args: args{
-				p: algebra.Vec{1, 2, 3, 4},
+				p: Vec{1, 2, 3, 4},
 			},
 			want: 16.0,
 		},
