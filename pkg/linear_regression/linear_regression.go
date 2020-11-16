@@ -2,9 +2,8 @@ package linear_regression
 
 import (
 	"fmt"
+	"linear_regression/pkg/algebra"
 	"math/rand"
-
-	. "linear_regression/pkg/algebra"
 )
 
 // LinearRegressionConfig is a container for settings for running
@@ -19,9 +18,9 @@ type LinearRegressionConfig struct {
 // LinearRegressionData is a container for the data that linear regression
 // will be run on.
 type LinearRegressionData struct {
-	x Arr // Features
-	y Vec // Labels
-	l int // length of the x data
+	x algebra.Arr // Features
+	y algebra.Vec // Labels
+	l int         // length of the x data
 }
 
 // LinearRegression is the type bundling the linear regression containers and
@@ -29,11 +28,11 @@ type LinearRegressionData struct {
 type LinearRegression struct {
 	config LinearRegressionConfig // Config of the linear regression
 	data   LinearRegressionData   // Data container
-	Thetas Vec                    // Thetas, will be optimized
+	Thetas algebra.Vec            // Thetas, will be optimized
 }
 
 // NewLinearRegression creates a new LinearRegression type with sane defaults
-func NewLinearRegression(x Arr, y Vec) LinearRegression {
+func NewLinearRegression(x algebra.Arr, y algebra.Vec) LinearRegression {
 	config := LinearRegressionConfig{
 		learningRate:   0.01,
 		printUpdates:   true,
@@ -49,8 +48,8 @@ func NewLinearRegression(x Arr, y Vec) LinearRegression {
 // taking the dot product.
 //
 //		y = x.thetas
-func (lr *LinearRegression) Predict(d Arr) Vec {
-	var predictions Vec
+func (lr *LinearRegression) Predict(d algebra.Arr) algebra.Vec {
+	var predictions algebra.Vec
 	for _, i := range d {
 		predictions = append(predictions, i[0]*lr.Thetas[0]+i[1]*lr.Thetas[1])
 	}
@@ -60,7 +59,7 @@ func (lr *LinearRegression) Predict(d Arr) Vec {
 // calcResiduals calculates the difference between the predicted values,
 // pred, and the actual values lr.data.y. The difference is returned as
 // a vector
-func (lr *LinearRegression) calcResiduals(pred Vec) Vec {
+func (lr *LinearRegression) calcResiduals(pred algebra.Vec) algebra.Vec {
 	return lr.data.y.Sub(pred)
 }
 
@@ -92,8 +91,8 @@ func (lr *LinearRegression) Fit() {
 //
 //		(self.lr/m)*(np.dot(X.T, residuals.T))
 //
-func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
-	var grad Vec
+func (lr *LinearRegression) calcGradient(residuals algebra.Vec) algebra.Vec {
+	var grad algebra.Vec
 	x := lr.data.x.Transpose()
 	r := residuals.Transpose()
 	for i := 0; i < len(x); i++ {
@@ -114,7 +113,7 @@ func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
 // the truth value:
 //
 //		e = (y - y_pred)**2
-func (lr *LinearRegression) calcError(p Vec) float32 {
+func (lr *LinearRegression) calcError(p algebra.Vec) float32 {
 	var s float32 = 0.0
 	for i := range p {
 		d := lr.data.y[i] - p[i]
@@ -126,8 +125,8 @@ func (lr *LinearRegression) calcError(p Vec) float32 {
 // InitThetas creates a vector with random numbers of length n. This will
 // be used as the starting point for the thetas that will be optimized during
 // linear regression.
-func InitThetas(n int) Vec {
-	var t Vec
+func InitThetas(n int) algebra.Vec {
+	var t algebra.Vec
 	for i := 0; i < n; i++ {
 		t = append(t, rand.Float32())
 	}
