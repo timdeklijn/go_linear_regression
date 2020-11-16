@@ -32,7 +32,7 @@ func (a Arr) Transpose() Arr {
 	return arr
 }
 
-// DotVec calculated the dotproduct between the array and
+// DotVec calculates the dotproduct between the array and
 // input vector v.
 func (a Arr) DotVec(v Vec) Vec {
 	// TODO: add size check and return error
@@ -43,6 +43,22 @@ func (a Arr) DotVec(v Vec) Vec {
 			tmpSum += a[i][j] * v[j]
 		}
 		vec = append(vec, tmpSum)
+	}
+	return vec
+}
+
+// DotArr calculates the dotproduct between two arrays
+func (a Arr) DotArr(other Arr) Vec {
+	// TODO: Make work for multi column other
+	var vec Vec
+	for c := 0; c < len(other[0]); c++ {
+		for i := range a {
+			var tmpSum float32 = 0.0
+			for j := range a[0] {
+				tmpSum += a[i][j] * other[j][c]
+			}
+			vec = append(vec, tmpSum)
+		}
 	}
 	return vec
 }

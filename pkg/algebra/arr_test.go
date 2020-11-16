@@ -79,3 +79,31 @@ func TestArr_DotVec(t *testing.T) {
 		})
 	}
 }
+
+func TestArr_DotArr(t *testing.T) {
+	type args struct {
+		other Arr
+	}
+	tests := []struct {
+		name string
+		a    Arr
+		args args
+		want Vec
+	}{
+		{
+			name: "Simple Dot product",
+			a:    Arr{Vec{1, 2}, Vec{3, 4}},
+			args: args{
+				other: Arr{Vec{1}, Vec{2}},
+			},
+			want: Vec{5, 11},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.a.DotArr(tt.args.other); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("DotArr() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

@@ -88,19 +88,12 @@ func (lr *LinearRegression) Fit() {
 //		(self.lr/m)*(np.dot(X.T, residuals.T))
 //
 func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
-	var grad Vec
 	x := lr.data.x.Transpose()
 	r := residuals.Transpose()
-	for i := 0; i < len(x); i++ {
-		var n float32 = 0.0
-		for j := 0; j < len(r); j++ {
-			n += x[i][j] * r[j][0]
-		}
-		grad = append(grad, n)
-	}
-	s := lr.config.learningRate / float32(lr.data.l)
+	grad := x.DotArr(r)
+	scale := lr.config.learningRate / float32(lr.data.l)
 	for i := range grad {
-		grad[i] *= s
+		grad[i] *= scale
 	}
 	return grad
 }
