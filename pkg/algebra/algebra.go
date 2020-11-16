@@ -1,4 +1,4 @@
-package main
+package algebra
 
 // Vec (tor) type
 type Vec []float32

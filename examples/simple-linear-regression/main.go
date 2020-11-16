@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	. "linear_regression/pkg/algebra"
+	. "linear_regression/pkg/linear_regression"
 )
 
 func main() {
@@ -14,7 +16,7 @@ func main() {
 	lr := NewLinearRegression(x, weight)
 	// Run
 	lr.Fit()
-	fmt.Println("\nThetas:", lr.thetas)
+	fmt.Println("\nThetas:", lr.Thetas)
 
 	var sample = Arr{Vec{1, 10}}
 	fmt.Println("Prediction:", lr.Predict(sample))

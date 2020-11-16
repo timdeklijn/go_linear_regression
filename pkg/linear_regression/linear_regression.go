@@ -1,8 +1,10 @@
-package main
+package linear_regression
 
 import (
 	"fmt"
 	"math/rand"
+
+	. "linear_regression/pkg/algebra"
 )
 
 // LinearRegressionConfig is a container for settings for running
@@ -27,7 +29,7 @@ type LinearRegressionData struct {
 type LinearRegression struct {
 	config LinearRegressionConfig // Config of the linear regression
 	data   LinearRegressionData   // Data container
-	thetas Vec                    // Thetas, will be optimized
+	Thetas Vec                    // Thetas, will be optimized
 }
 
 // NewLinearRegression creates a new LinearRegression type with sane defaults
@@ -50,7 +52,7 @@ func NewLinearRegression(x Arr, y Vec) LinearRegression {
 func (lr *LinearRegression) Predict(d Arr) Vec {
 	var predictions Vec
 	for _, i := range d {
-		predictions = append(predictions, i[0]*lr.thetas[0]+i[1]*lr.thetas[1])
+		predictions = append(predictions, i[0]*lr.Thetas[0]+i[1]*lr.Thetas[1])
 	}
 	return predictions
 }
@@ -70,7 +72,7 @@ func (lr *LinearRegression) Fit() {
 	for cntr < lr.config.epochs+1 {
 		residuals := lr.calcResiduals(pred)
 		gradient := lr.calcGradient(residuals)
-		lr.thetas = lr.thetas.Add(gradient)
+		lr.Thetas = lr.Thetas.Add(gradient)
 		// Create new predictions
 		pred = lr.Predict(lr.data.x)
 		if cntr%100 == 0 && lr.config.printUpdates {
@@ -79,7 +81,7 @@ func (lr *LinearRegression) Fit() {
 				"================================",
 				"\nEpoch     ", cntr,
 				"\nError     ", e,
-				"\nThetas    ", lr.thetas,
+				"\nThetas    ", lr.Thetas,
 			)
 		}
 		cntr++

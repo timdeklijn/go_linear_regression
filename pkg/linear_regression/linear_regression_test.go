@@ -1,6 +1,7 @@
-package main
+package linear_regression
 
 import (
+	. "linear_regression/pkg/algebra"
 	"math"
 	"reflect"
 	"testing"
@@ -45,12 +46,12 @@ func TestLinearRegression_Fit(t *testing.T) {
 			lr := &LinearRegression{
 				config: tt.fields.config,
 				data:   tt.fields.data,
-				thetas: tt.fields.thetas,
+				Thetas: tt.fields.thetas,
 			}
 			// Run the actual fit
 			lr.Fit()
 			// And check the results against the expected values
-			got := lr.thetas
+			got := lr.Thetas
 			for i := range got {
 				// With margin, check if thetas are equal to want
 				if !almostEqual(got[i], tt.want[i], 1e-3) {
@@ -124,7 +125,7 @@ func TestLinearRegression_Predict(t *testing.T) {
 			lr := &LinearRegression{
 				config: tt.fields.config,
 				data:   tt.fields.data,
-				thetas: tt.fields.thetas,
+				Thetas: tt.fields.thetas,
 			}
 			if got := lr.Predict(tt.args.d); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("Predict() = %v, want %v", got, tt.want)
@@ -175,7 +176,7 @@ func TestLinearRegression_calcResiduals(t *testing.T) {
 			lr := &LinearRegression{
 				config: tt.fields.config,
 				data:   tt.fields.data,
-				thetas: tt.fields.thetas,
+				Thetas: tt.fields.thetas,
 			}
 			if got := lr.calcResiduals(tt.args.pred); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("calcResiduals() = %v, want %v", got, tt.want)
@@ -231,7 +232,7 @@ func TestLinearRegression_calcGradient(t *testing.T) {
 			lr := &LinearRegression{
 				config: tt.fields.config,
 				data:   tt.fields.data,
-				thetas: tt.fields.thetas,
+				Thetas: tt.fields.thetas,
 			}
 			if got := lr.calcGradient(tt.args.residuals); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("calcGradient() = %v, want %v", got, tt.want)
@@ -282,7 +283,7 @@ func TestLinearRegression_calcError(t *testing.T) {
 			lr := &LinearRegression{
 				config: tt.fields.config,
 				data:   tt.fields.data,
-				thetas: tt.fields.thetas,
+				Thetas: tt.fields.thetas,
 			}
 			if got := lr.calcError(tt.args.p); got != tt.want {
 				t.Errorf("calcError() = %v, want %v", got, tt.want)
