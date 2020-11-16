@@ -16,6 +16,6 @@ func main() {
 	lr.Fit()
 	fmt.Println("\nThetas:", lr.thetas)
 
-	var sample Arr = Arr{Vec{1, 10}}
+	var sample = Arr{Vec{1, 10}}
 	fmt.Println("Prediction:", lr.Predict(sample))
 }

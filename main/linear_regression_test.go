@@ -1,9 +1,14 @@
 package main
 
 import (
+	"math"
 	"reflect"
 	"testing"
 )
+
+func almostEqual(a, b, epsilon float32) bool {
+	return float32(math.Abs(float64(a-b))) <= epsilon
+}
 
 func TestLinearRegression_Fit(t *testing.T) {
 	type fields struct {
@@ -46,10 +51,12 @@ func TestLinearRegression_Fit(t *testing.T) {
 			lr.Fit()
 			// And check the results against the expected values
 			got := lr.thetas
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Fit() = %v, want %v", got, tt.want)
+			for i := range got {
+				// With margin, check if thetas are equal to want
+				if !almostEqual(got[i], tt.want[i], 1e-3) {
+					t.Errorf("Fit() = %v, want %v", got, tt.want)
+				}
 			}
-
 		})
 	}
 }
@@ -89,6 +96,27 @@ func TestLinearRegression_Predict(t *testing.T) {
 				d: Vec{2}.AddOnes(),
 			},
 			want: Vec{3},
+		},
+		{
+			name: "Predict simpler: y(x)=0+x->x=2->y=2",
+			fields: fields{
+				LinearRegressionConfig{
+					learningRate:   0.001,
+					printUpdates:   false,
+					printFrequency: 100,
+					epochs:         100000,
+				},
+				LinearRegressionData{
+					x: Vec{1, 2, 3, 4}.AddOnes(),
+					y: Vec{1, 2, 3, 4},
+					l: 4,
+				},
+				Vec{0, 1},
+			},
+			args: args{
+				d: Vec{2}.AddOnes(),
+			},
+			want: Vec{2},
 		},
 	}
 	for _, tt := range tests {

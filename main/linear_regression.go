@@ -35,8 +35,8 @@ func NewLinearRegression(x Arr, y Vec) LinearRegression {
 	config := LinearRegressionConfig{
 		learningRate:   0.01,
 		printUpdates:   true,
-		printFrequency: 100,
-		epochs:         1000,
+		printFrequency: 1000,
+		epochs:         100000,
 	}
 	data := LinearRegressionData{x, y, len(x)}
 	thetas := InitThetas(len(x[0]))
@@ -72,7 +72,7 @@ func (lr *LinearRegression) Fit() {
 		gradient := lr.calcGradient(residuals)
 		lr.thetas = lr.thetas.Add(gradient)
 		// Create new predictions
-		pred := lr.Predict(lr.data.x)
+		pred = lr.Predict(lr.data.x)
 		if cntr%100 == 0 && lr.config.printUpdates {
 			e := lr.calcError(pred)
 			fmt.Println(
@@ -91,7 +91,7 @@ func (lr *LinearRegression) Fit() {
 //		(self.lr/m)*(np.dot(X.T, residuals.T))
 //
 func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
-	var new Vec
+	var grad Vec
 	x := lr.data.x.Transpose()
 	r := residuals.Transpose()
 	for i := 0; i < len(x); i++ {
@@ -99,13 +99,13 @@ func (lr *LinearRegression) calcGradient(residuals Vec) Vec {
 		for j := 0; j < len(r); j++ {
 			n += x[i][j] * r[j][0]
 		}
-		new = append(new, n)
+		grad = append(grad, n)
 	}
 	s := lr.config.learningRate / float32(lr.data.l)
-	for i := range new {
-		new[i] *= s
+	for i := range grad {
+		grad[i] *= s
 	}
-	return new
+	return grad
 }
 
 // calcError calculates the squared error between a predictions and
