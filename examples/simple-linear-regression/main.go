@@ -12,8 +12,7 @@ func main() {
 	weight := Vec{7, 7.5, 7.3, 8, 7.7, 7.9, 8.2, 8.8, 8.4, 8.3}
 
 	// Setup
-	x := length.AddOnes()
-	lr := NewLinearRegression(x, weight)
+	lr := NewLinearRegression(length.AddOnes(), weight)
 	// Run
 	lr.Fit()
 	fmt.Println("\nThetas:", lr.Thetas)
