@@ -31,3 +31,18 @@ func (a Arr) Transpose() Arr {
 	}
 	return arr
 }
+
+// DotVec calculated the dotproduct between the array and
+// input vector v.
+func (a Arr) DotVec(v Vec) Vec {
+	// TODO: add size check and return error
+	var vec Vec
+	for i := range a {
+		var tmpSum float32 = 0.0
+		for j := range v {
+			tmpSum += a[i][j] * v[j]
+		}
+		vec = append(vec, tmpSum)
+	}
+	return vec
+}

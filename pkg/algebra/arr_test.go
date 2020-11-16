@@ -51,3 +51,31 @@ func TestArr_Transpose(t *testing.T) {
 		})
 	}
 }
+
+func TestArr_DotVec(t *testing.T) {
+	type args struct {
+		v Vec
+	}
+	tests := []struct {
+		name string
+		a    Arr
+		args args
+		want Vec
+	}{
+		{
+			name: "Simple dotproduct",
+			a:    Arr{Vec{1, 2}, Vec{3, 4}},
+			args: args{
+				v: Vec{1, 2},
+			},
+			want: Vec{5, 11},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := tt.a.DotVec(tt.args.v); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("DotVec() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

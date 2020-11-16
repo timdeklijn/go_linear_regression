@@ -49,11 +49,7 @@ func NewLinearRegression(x Arr, y Vec) LinearRegression {
 //
 //		y = x.thetas
 func (lr *LinearRegression) Predict(d Arr) Vec {
-	var predictions Vec
-	for _, i := range d {
-		predictions = append(predictions, i[0]*lr.Thetas[0]+i[1]*lr.Thetas[1])
-	}
-	return predictions
+	return d.DotVec(lr.Thetas)
 }
 
 // calcResiduals calculates the difference between the predicted values,
